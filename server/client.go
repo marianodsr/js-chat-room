@@ -86,7 +86,7 @@ func (c *Client) sendMessage(header Event, payload string, sender string) {
 
 	for i := 0; i < retries; i++ {
 		err := c.Conn.WriteMessage(websocket.TextMessage, encoded)
-		if err != nil {
+		if err == nil {
 			break
 		}
 	}
