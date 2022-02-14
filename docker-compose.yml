@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  rabbitMQ-container:
+    image: rabbitmq:3-management
+    hostname: rabbitMQ-container
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    expose:
+      - 5672
+      - 5673
+      - 15672
+  
+  postgresDB-container:
+    image: postgres
+    hostname: postgresDB-container
+    environment:
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=chat-room
+    ports:
+     - 5432
+
+  chat-room-be-container:
+    build: .
+    ports:
+     - 8000:8000
+    depends_on:
+      rabbitMQ-container:
+        condition: service_healthy
+      postgresDB-container:
+        condition: service_started
+
+networks:
+  default:
+    name: chatroom

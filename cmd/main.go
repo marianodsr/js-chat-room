@@ -31,7 +31,7 @@ func main() {
 		MaxAge:           300,
 	}))
 
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	conn, err := amqp.Dial("amqp://guest:guest@rabbitMQ-container:5672/")
 	if err != nil {
 		panic(err)
 	}
@@ -70,7 +70,7 @@ func main() {
 
 	server := server.NewServer(r, stockChann)
 
-	go http.ListenAndServe("localhost:8000", r)
+	go http.ListenAndServe("0.0.0.0:8000", r)
 
 	server.ServeWebsocket()
 

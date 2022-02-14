@@ -92,7 +92,7 @@ func (h *hub) NewRoom(capacity uint, id string) *room {
 func (h *hub) getStockPrice(msg Message) {
 	symbol := msg.Payload
 	sender := msg.Sender.Conn.RemoteAddr().String()
-	http.Get(fmt.Sprintf("http://localhost:9000/%s?sender=%s", symbol, sender))
+	http.Get(fmt.Sprintf("http://stock-bot-container:9000/%s?sender=%s", symbol, sender))
 }
 
 func (h *hub) runStockBot() {
